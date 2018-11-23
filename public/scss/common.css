@@ -1,0 +1,19 @@
+html, body {
+  height: 100%; }
+
+.container {
+  display: flex;
+  flex-direction: column; }
+
+.head {
+  height: 60px;
+  border-bottom: 1px solid #000; }
+
+.main {
+  flex: 1; }
+
+.foot {
+  height: 60px;
+  border-bottom: 1px solid #000; }
+
+/*# sourceMappingURL=common.css.map */

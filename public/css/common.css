@@ -1,0 +1,65 @@
+html, body {
+  height: 100%;
+  background-color: #ddd;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  height: 60px;
+  border-bottom: 1px solid #000;
+  justify-content: space-between;
+}
+.head .left {
+  font-size: 25px;
+}
+.head .left a {
+  text-decoration: none;
+}
+.head .right {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+.head .right p {
+  margin-right: 10px;
+}
+
+.main {
+  flex: 1;
+  background-color: #fff;
+  display: flex;
+}
+.main .m-left {
+  width: 200px;
+  border-right: 1px solid #ccc;
+}
+.main .m-left ul li {
+  height: 40px;
+  font-size: 16px;
+  line-height: 40px;
+  border-bottom: 1px solid #ccc;
+  text-align: center;
+}
+.main .m-left ul li a {
+  text-decoration: none;
+}
+
+.body {
+  flex: 1;
+}
+
+.foot {
+  height: 60px;
+  padding: 8px 0;
+  text-align: center;
+}
+
+/*# sourceMappingURL=common.css.map */
