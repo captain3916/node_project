@@ -1,0 +1,27 @@
+html,body{
+    height: 100%;
+}
+
+body{
+    /* background: url(/images/bg.jpg) no-repeat;
+    background-position: center;
+    background-size: cover; */
+    background-color: #003;
+}
+
+.main{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+
+
+/* -------------------------------- */
+
+.form-group{
+    text-align: center;
+}
+.form-group label{
+    color: #fff;
+}
