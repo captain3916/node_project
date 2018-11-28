@@ -27,16 +27,34 @@
 
     <div class="main">
         <div class="form-group">
-            <label>用户名</label>
+            <label for="user">用户名</label>
             <input type="text" id="user" class="form-control" placeholder="请输入用户名">
         </div>
         <div class="form-group">
-            <label>密码</label>
+            <label for="pwd">密码</label>
             <input type="password" id="pwd" class="form-control" placeholder="请输入密码">
         </div>
         <div class="form-group">
-            <label>确认密码</label>
+            <label for="cfpwd">确认密码</label>
             <input type="password" id="cfpwd" class="form-control" placeholder="请确认密码">
+        </div>
+        <div class="form-group">
+            <label for="age">年龄</label>
+            <input type="text" id="age" class="form-control" placeholder="请确认年龄">
+        </div>
+        <div class="form-group">
+            <label>性别</label>
+            <select name="sex" id="sex" class="form-control">
+                <option value="男" selected>男</option>
+                <option value="女">女</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>是否是管理员</label>
+            <select name="isAdmin" id="isAdmin" class="form-control">
+                <option value="否" selected>否</option>
+                <option value="是">是</option>
+            </select>
         </div>
         <div class="form-group">
             <button type="submit" id="register" class="btn btn-primary">注册</button>

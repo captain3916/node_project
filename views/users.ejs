@@ -12,6 +12,10 @@
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="/css/user.css">
 
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="/js/logout.js"></script>
+
 
 </head>
 
@@ -43,30 +47,41 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Username</th>
+                                <th>用户名</th>
+                                <th>年龄</th>
+                                <th>性别</th>
+                                <th>是否为管理员</th>
+                                <th>操作</th>
                             </tr>
                         </thead>
                         <tbody>
+                            <% for(var i=0; i<users.length; i++){ %>
                             <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
+                                <th scope="row">
+                                    <%= i+1 %>
+                                </th>
+                                <td>
+                                    <%= users[i].uName %>
+                                </td>
+                                <td>
+                                    <%= users[i].age %>
+                                </td>
+                                <td>
+                                    <%= users[i].sex %>
+                                </td>
+                                <td>
+                                    <%= users[i].isAdmin ? '是' : '否' %>
+                                </td>
+                                <td>
+                                    <% if(!users[i].isAdmin){ %>
+                                    <a href='/deleteUser?_id=<%= users[i]._id %>'>删除</a>
+                                    <% } else { %>
+                                    不能删管理员
+                                    <% } %>
+                                </td>
                             </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                            </tr>
+                            <% } %>
+
                         </tbody>
                     </table>
                 </div>
@@ -75,17 +90,18 @@
                     <nav aria-label="Page navigation">
                         <ul class="pagination">
                             <li>
-                                <a href="#" aria-label="Previous">
+                                <a href="/users?currentPage=<%= currentPage-1 < 1 ? 1 : currentPage-1 %>&pageSize=<%= pageSize %>"
+                                    aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
-                            <li class="active"><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
+                            <% for(var i=0; i<page; i++){ %>
+                            <li class="<%= i+1 === currentPage ? 'active' : '' %>"><a href="/users?currentPage=<%= i+1 %>&pageSize=<%= pageSize %>">
+                                    <%= i+1 %></a></li>
+                            <% } %>
                             <li>
-                                <a href="#" aria-label="Next">
+                                <a href="/users?currentPage=<%= currentPage+1 > page ? page : currentPage+1 %>&pageSize=<%= pageSize %>"
+                                    aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>

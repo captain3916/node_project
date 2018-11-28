@@ -7,53 +7,94 @@ const url = 'mongodb://127.0.0.1:27017';
 /* GET home page. */
 
 
-/*
-router.use((req, res, next) => {
-  console.log(typeof req.cookies.U_ID);
-  req.ueserInfo = {
-    U_ID: null,
-    uName: null
-  };
-
-  if (req.cookies.U_ID) { //如果缓存里面有用户ID
-    MongoClient.connect(url, (err, client) => {
-      //选择数据库
-      const db = client.db('text');
-
-      db.collection('user').find({ _id: ObjectId(req.cookies.U_ID) }).toArray((err, items) => {
-        if (items.length) { //找到数据
-          req.ueserInfo.U_ID = items[0]['_id'];
-          req.ueserInfo.uName = items[0]['uName'];
-          next();
-
-        } else { //没找到数据（也可认为是未登录状态）
-          req.ueserInfo.U_ID = null;
-          req.ueserInfo.uName = null;
-          next();
-        }
-      })
-    });
-  } else { //未登录状态
-    req.ueserInfo.U_ID = null;
-    req.ueserInfo.uName = null;
-    next();
-  }
-});
-*/
-
-
-
 router.get('/', function (req, res, next) {
   res.render('index', {
     uName: req.ueserInfo.uName
   });
 });
 
+
+//将用户数据渲染到页面
 router.get('/users', function (req, res, next) {
-  res.render('users', {
-    uName: req.ueserInfo.uName
+
+  let pageSize = +req.query.pageSize || 5; //每页信息有几条？
+  let currentPage = +req.query.currentPage || 1; //当前访问的是第几页？
+  let totalUsersNum = 0; //总用户数量
+  let page = 0; // 总共几页
+
+  MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
+    if (err) {
+      res.render('error', {
+        message: '数据库连接失败！',
+        error: err
+      })
+      return;
+    }
+    let db = client.db('text');
+    db.collection('user').find().count().then(num => {
+      totalUsersNum = num;
+      page = Math.ceil(num / pageSize);
+      db.collection('user').find().limit(pageSize).skip(currentPage * pageSize - pageSize).toArray((err, items) => {
+        if (err) {
+          res.render('error', {
+            message: '数据库连接失败！',
+            error: err
+          })
+          return;
+        }
+        res.render('users', {
+          uName: req.ueserInfo.uName,
+          users: items,
+          page: page,
+          pageSize: pageSize,
+          currentPage: currentPage
+        });
+      });
+    }, err => {
+      res.render('error', {
+        message: '数据库连接失败！',
+        error: err
+      })
+    })
+
+  })
+});
+
+//删除某个用户
+router.get('/deleteUser', (req, res, next) => {
+  let id = req.query._id;
+  MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
+    if (err) {
+      res.render('error', {
+        message: '连接数据库失败',
+        error: err
+      })
+      return;
+    }
+    var db = client.db('text');
+    db.collection('user').deleteOne({ _id: ObjectId(id) }, (err, data) => {
+      if (err) {
+        res.render('error', {
+          message: '删除失败',
+          error: err
+        })
+        client.close();
+        return;
+      }
+      if (data.deletedCount == 1) { //删除成功
+        res.redirect('/users');
+      } else {
+        res.render('error', {
+          message: '删除失败,未找到数据！',
+          error: err
+        })
+      }
+      client.close();
+    });
   });
 });
+
+
 
 router.get('/phone', function (req, res, next) {
   res.render('phone', {
